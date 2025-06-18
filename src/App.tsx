@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import Alert from "./components/Alert";
-import Button from "./components/Button";
+import React from "react";
+import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import { bugAdded } from "./redux/actions";
+import { Bug } from "./redux/actionTypes";
 
-const App = () => {
-  const [alertVisible, setAlertVisibility] = useState(false);
-
+function App() {
+  const dispatch = useDispatch();
+  const state = useSelector((state: Bug[]) => state[state.length - 1] || { description: "" });
+  const handleAddMessage = () => {
+    dispatch(bugAdded(`Nuovo messaggio aggiunto alle ${new Date().toLocaleTimeString()}`));
+  };
   return (
-    <div>
-      {alertVisible && (
-        <Alert onClose={() => setAlertVisibility(false)}>
-          Hello <b>World</b>
-        </Alert>
-      )}
-      <Button onclick={() => setAlertVisibility(true)} color="secondary">
-        Test
-      </Button>
-    </div>
+    <>
+      <button onClick={handleAddMessage}>Aggiungi Messaggio</button>
+      <h1>{state.description}</h1>
+    </>
   );
-};
+}
 
 export default App;
